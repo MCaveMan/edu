@@ -8,7 +8,7 @@
 你好。你们。你的。我们。我的。
 他们。他的。你我他。
 ```
-[天地人](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/天地人.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/天地人.mp3"></audio>
 
 ### 金木水火土
 ```json
@@ -16,12 +16,12 @@
 四十。四月。五十。五人。上下。上海。上车。上山。
 下车。下来。下马。下山。三三两两。不三不四。
 ```
-[金木水火土](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/金木水火土.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/金木水火土.mp3"></audio>
 
 ```json
 一。二。三。上。
 ```
-[金木水火土2](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/金木水火土2.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/金木水火土2.mp3"></audio>
 
 ### 口耳目手足
 ```json
@@ -29,12 +29,12 @@
 大手。手中。手上。手足。足球。站立。站直。站好。
 坐下。坐正。坐立不安。目中。无人。
 ```
-[口耳目手足](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/口耳目手足.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/口耳目手足.mp3"></audio>
 
 ```json
 口。耳。目。手。
 ```
-[口耳目手足2](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/口耳目手足2.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/口耳目手足2.mp3"></audio>
 
 
 ### 日月山川
@@ -43,10 +43,10 @@
 水面。大火。着火。火花。火光。上火。大山。山里。
 上山。石头。石子。田地。水田。心田。种田。禾苗。
 ```
-[日月山川](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/日月山川.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/日月山川.mp3"></audio>
 
 
 ```json
 日。火。田。禾。
 ```
-[日月山川2](https://audio.1659.us.kg/https://pub.1659.us.kg/audio/日月山川2.mp3)
+<audio controls="" src="https://pub.1659.us.kg/audio/日月山川2.mp3"></audio>
