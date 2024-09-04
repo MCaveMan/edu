@@ -6,13 +6,11 @@ on:
       - main
   workflow_dispatch:
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  Job:
+    runs-on: windows-latest
     steps:
-    - name: Converts Markdown to HTML
-      uses: jaywcjlove/markdown-to-html-cli@main
-      with:
-        source: xx/yuwen.md
-        output: xx/yw.html
-        github-corners: https://github.com/jaywcjlove/markdown-to-html-cli
-        favicon: data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>
+      - name: Convert Markdown to HTML
+        uses: natescherer/markdown-to-html-with-github-style-action@v1
+        with:
+          path: xx/yuwen.md
+          outputpath: xx
