@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Build MD
 
 on:
   push:
@@ -24,6 +24,7 @@ jobs:
       run: |
         git config --local user.email "andyBot@1659.us.kg"
         git config --local user.name "andyBot"
+        git add -A
         git commit -a -m "Add changes"
     - name: Push changes
       uses: ad-m/github-push-action@master
