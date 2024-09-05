@@ -18,8 +18,10 @@ jobs:
       with:
         source: xx/yuwen.md
         output: xx/yw.html
-        github-corners: https://github.com/jaywcjlove/markdown-to-html-cli
-        favicon: data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>
+        description: 一年级语文资料
+        title: 一年级语文资料
+        github-corners: https://github.com/MCaveMan/edu
+        favicon: ico/favicon-32x32-yuwen.png
     - name: Commit files
       run: |
         git config --local user.email "andyBot@1659.us.kg"
