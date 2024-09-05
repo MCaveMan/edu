@@ -47,10 +47,6 @@
 
 <audio controls="" src="../audio/拼音bpmfdtnl.mp3"></audio>
 
-词语2：
-
-<audio controls="" src="../audio/拼音bpmfdtnl2.mp3"></audio>
-
 ### 语文园地二
 ![语文园地二](../img/语文园地二.png)
 
@@ -65,18 +61,10 @@
 
 <audio controls="" src="../audio/拼音gkhjqx.mp3"></audio>
 
-词语2：
-
-<audio controls="" src="../audio/拼音gkhjqx2.mp3"></audio>
-
 ### 拼音zcsyw
 ![拼音zcsyw](../img/拼音zcsyw.png)
 
-<audio controls="" src="../audio/拼音zcsyw.mp3"></audio>
-
-词语2：
-
-<audio controls="" src="../audio/拼音zcsyw2.mp3"></audio>
+<audio controls="" src="../audio/拼音zcs.mp3"></audio>
 
 ### 语文园地三
 ![语文园地三](../img/语文园地三.png)
@@ -90,20 +78,12 @@
 ### 拼音aieiouiu
 ![拼音aieiouiu](../img/拼音aieiouiu.png)
 
-<audio controls="" src="../audio/拼音aieiouiu.mp3"></audio>
-
-词语2：
-
-<audio controls="" src="../audio/拼音aieiouiu2.mp3"></audio>
+<audio controls="" src="../audio/拼音aiei.mp3"></audio>
 
 ### 拼音ieingong
 ![拼音ieingong](../img/拼音ieingong.png)
 
-<audio controls="" src="../audio/拼音ieingong.mp3"></audio>
-
-词语2：
-
-<audio controls="" src="../audio/拼音ieingong2.mp3"></audio>
+<audio controls="" src="../audio/拼音ie.mp3"></audio>
 
 ### 语文园地四
 ![语文园地四](../img/语文园地四.png)
