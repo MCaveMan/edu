@@ -20,7 +20,7 @@ jobs:
         output: xx/yw.html
         description: 一年级语文资料
         title: 一年级语文资料
-        github-corners: https://github.com/MCaveMan/edu
+        corners : false
         favicon: ../ico/favicon-32x32-yuwen.png
     - name: Commit files
       run: |
