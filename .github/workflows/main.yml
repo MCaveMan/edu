@@ -22,6 +22,14 @@ jobs:
         title: 一年级语文资料
         corners : false
         favicon: ../ico/favicon-32x32-yuwen.png
+    - name: Converts Markdown to HTML
+      uses: jaywcjlove/markdown-to-html-cli@main
+      with:
+        source: README.md
+        output: index.html
+        description: 目录
+        title: 目录
+        corners : false
     - name: Commit files
       run: |
         git config --local user.email "andyBot@1659.us.kg"
