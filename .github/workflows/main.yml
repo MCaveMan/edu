@@ -34,6 +34,14 @@ jobs:
     - name: Converts Markdown to HTML
       uses: jaywcjlove/markdown-to-html-cli@main
       with:
+        source: xx/kebiao.md
+        output: xx/kb.html
+        description: 课表
+        title: 课表
+        corners : false
+    - name: Converts Markdown to HTML
+      uses: jaywcjlove/markdown-to-html-cli@main
+      with:
         source: README.md
         output: index.html
         description: 目录
