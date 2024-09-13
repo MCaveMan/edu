@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta description="目录">
+    <meta description="课表">
   </head>
   <body><dark-mode style="position: fixed; top: 8px; left: 10px; z-index: 999;" dark="Dark" light="Light" permanent="true"></dark-mode><script>const t=document;const e="_dark_mode_theme_";const s="permanent";const o="colorschemechange";const i="permanentcolorscheme";const h="light";const r="dark";const n=(t,e,s=e)=>{Object.defineProperty(t,s,{enumerable:true,get(){const t=this.getAttribute(e);return t===null?"":t},set(t){this.setAttribute(e,t)}})};const c=(t,e,s=e)=>{Object.defineProperty(t,s,{enumerable:true,get(){return this.hasAttribute(e)},set(t){if(t){this.setAttribute(e,"")}else{this.removeAttribute(e)}}})};class a extends HTMLElement{static get observedAttributes(){return["mode",h,r,s]}LOCAL_NANE=e;constructor(){super();this.t()}connectedCallback(){n(this,"mode");n(this,r);n(this,h);c(this,s);const a=localStorage.getItem(e);if(a&&[h,r].includes(a)){this.mode=a;this.permanent=true}if(this.permanent&&!a){localStorage.setItem(e,this.mode)}const l=[h,r].includes(a);if(this.permanent&&a){this.o()}else{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){this.mode=r;this.o()}if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches){this.mode=h;this.o()}}if(!this.permanent&&!l){window.matchMedia("(prefers-color-scheme: light)").onchange=t=>{this.mode=t.matches?h:r;this.o()};window.matchMedia("(prefers-color-scheme: dark)").onchange=t=>{this.mode=t.matches?r:h;this.o()}}const d=new MutationObserver(((s,h)=>{this.mode=t.documentElement.dataset.colorMode;if(this.permanent&&l){localStorage.setItem(e,this.mode);this.i(i,{permanent:this.permanent})}this.h();this.i(o,{colorScheme:this.mode})}));d.observe(t.documentElement,{attributes:true});this.i(o,{colorScheme:this.mode});this.h()}attributeChangedCallback(t,s,o){if(t==="mode"&&s!==o&&[h,r].includes(o)){const t=localStorage.getItem(e);if(this.mode===t){this.mode=o;this.h();this.o()}else if(this.mode&&this.mode!==t){this.h();this.o()}}else if((t===h||t===r)&&s!==o){this.h()}if(t==="permanent"&&typeof this.permanent==="boolean"){this.permanent?localStorage.setItem(e,this.mode):localStorage.removeItem(e)}}o(){t.documentElement.setAttribute("data-color-mode",this.mode)}h(){this.icon.textContent=this.mode===h?"🌒":"🌞";this.text.textContent=this.mode===h?this.getAttribute(r):this.getAttribute(h)}t(){var s=this.attachShadow({mode:"open"});this.label=t.createElement("span");this.label.setAttribute("class","wrapper");this.label.onclick=()=>{this.mode=this.mode===h?r:h;if(this.permanent){localStorage.setItem(e,this.mode)}this.o();this.h()};s.appendChild(this.label);this.icon=t.createElement("span");this.label.appendChild(this.icon);this.text=t.createElement("span");this.label.appendChild(this.text);const o=`
 [data-color-mode*='dark'], [data-color-mode*='dark'] body {
@@ -90,10 +90,130 @@ class MarkdownStyle extends HTMLElement {
     }
 }
 customElements.define('markdown-style', MarkdownStyle);</script><markdown-style style="max-width: 960px; margin: 0 auto 60px auto; padding: 8px;" class="markdown-style">
-    <h1 id="目录"><a class="anchor" aria-hidden="true" tabindex="-1" href="#目录"><span class="octicon octicon-link"></span></a>目录</h1>
-    <h2 id="课表"><a class="anchor" aria-hidden="true" tabindex="-1" href="#课表"><span class="octicon octicon-link"></span></a><a href="xx/kb.html">课表</a></h2>
-    <h2 id="语文"><a class="anchor" aria-hidden="true" tabindex="-1" href="#语文"><span class="octicon octicon-link"></span></a><a href="xx/yw.html">语文</a></h2>
-    <h2 id="英语"><a class="anchor" aria-hidden="true" tabindex="-1" href="#英语"><span class="octicon octicon-link"></span></a><a href="xx/yy.html">英语</a></h2>
+    <h2 id="一年级课表"><a class="anchor" aria-hidden="true" tabindex="-1" href="#一年级课表"><span class="octicon octicon-link"></span></a>一年级课表</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>节次</th>
+          <th>时间</th>
+          <th>周一</th>
+          <th>周二</th>
+          <th>周三</th>
+          <th>周四</th>
+          <th>周五</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>值日早读</td>
+          <td>7:50~8:10</td>
+          <td>值日早读</td>
+          <td>值日早读</td>
+          <td>值日早读</td>
+          <td>值日早读</td>
+          <td>值日早读</td>
+        </tr>
+        <tr>
+          <td>第一节</td>
+          <td>8:20~9:00</td>
+          <td>数学</td>
+          <td>语文</td>
+          <td>数学</td>
+          <td>语文</td>
+          <td>数学</td>
+        </tr>
+        <tr>
+          <td>大课间活动</td>
+          <td>9:00~9:40</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+        </tr>
+        <tr>
+          <td>第二节</td>
+          <td>9:50~10:30</td>
+          <td>语文</td>
+          <td>语文</td>
+          <td>音乐</td>
+          <td>数学</td>
+          <td>语文</td>
+        </tr>
+        <tr>
+          <td>第三节</td>
+          <td>10:40~11:25</td>
+          <td>道法</td>
+          <td>地方校本</td>
+          <td>语文</td>
+          <td>语文</td>
+          <td>语文(书法)</td>
+        </tr>
+        <tr>
+          <td>午 餐</td>
+          <td>11:25~12:00</td>
+          <td>午 餐</td>
+          <td>午 餐</td>
+          <td>午 餐</td>
+          <td>午 餐</td>
+          <td>午 餐</td>
+        </tr>
+        <tr>
+          <td>午 睡</td>
+          <td>12:00~13:00</td>
+          <td>午 睡</td>
+          <td>午 睡</td>
+          <td>午 睡</td>
+          <td>午 睡</td>
+          <td>午 睡</td>
+        </tr>
+        <tr>
+          <td>第四节</td>
+          <td>13:10~13:50</td>
+          <td>科学</td>
+          <td>美术</td>
+          <td>体育3</td>
+          <td>音乐</td>
+          <td>道法</td>
+        </tr>
+        <tr>
+          <td>第五节</td>
+          <td>14:00~14:45</td>
+          <td>体育2</td>
+          <td>劳动</td>
+          <td>美术</td>
+          <td>体育1</td>
+          <td>体育2</td>
+        </tr>
+        <tr>
+          <td>课间活动</td>
+          <td>14:45~15:00</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+          <td>课间活动</td>
+        </tr>
+        <tr>
+          <td>第六节</td>
+          <td>15:00~15:40</td>
+          <td>基础托管</td>
+          <td>基础托管</td>
+          <td>班队心里</td>
+          <td>基础托管</td>
+          <td>基础托管</td>
+        </tr>
+        <tr>
+          <td>拓展托管</td>
+          <td>15:50~16:30</td>
+          <td>拓展托管</td>
+          <td>足球</td>
+          <td>拓展托管</td>
+          <td>足球</td>
+          <td>拓展托管</td>
+        </tr>
+      </tbody>
+    </table>
   <style>markdown-style pre .copied {
   display: flex;
   position: absolute;
