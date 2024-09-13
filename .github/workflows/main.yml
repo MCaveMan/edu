@@ -25,6 +25,15 @@ jobs:
     - name: Converts Markdown to HTML
       uses: jaywcjlove/markdown-to-html-cli@main
       with:
+        source: xx/yingyu.md
+        output: xx/yy.html
+        description: 一年级英语资料
+        title: 一年级英语资料
+        corners : false
+        favicon: ../ico/favicon-32x32-yingyu.png
+    - name: Converts Markdown to HTML
+      uses: jaywcjlove/markdown-to-html-cli@main
+      with:
         source: README.md
         output: index.html
         description: 目录
