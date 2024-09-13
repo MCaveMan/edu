@@ -8,7 +8,7 @@ Hello:
 
 Every day I go to school:
 
-<audio controls="controls" loop="loop" src="../audio/firstDaySchool.mp3"></audio>
+<audio controls="controls" loop="loop" src="../audio/everyDaySchool.mp3"></audio>
 
 I can follow the rules:
 
