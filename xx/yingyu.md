@@ -4,12 +4,15 @@
 
 Hello:
 
-<audio controls="" src="../audio/hellohello.m4a"></audio>
+<audio controls="controls" loop="loop" src="../audio/hellohello.m4a"></audio>
+
+Every day I go to school:
+<audio controls="controls" loop="loop" src="../audio/hellohello.m4a"></audio>
 
 I can follow the rules:
 
-<audio controls="" src="../audio/followRules.m4a"></audio>
+<audio controls="controls" loop="loop" src="../audio/followRules.m4a"></audio>
 
 The first day of school:
 
-<audio controls="" src="../audio/firstDaySchool.mp3"></audio>
+<audio controls="controls" loop="loop" src="../audio/firstDaySchool.mp3"></audio>
