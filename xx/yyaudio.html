@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基于howlerjs的简易音频播放器</title>
+    <title>英语音频资料</title>
     <style>
         body {
             margin: 0;
@@ -63,7 +63,7 @@
     </style>
 </head>
 <body>
-    <h1>基于howlerjs的简易音频播放器</h1>
+    <h1>英语音频资料</h1>
 
     <ui-audio id="audio" controls loop="0"></ui-audio>
 
@@ -78,7 +78,6 @@
         <tbody></tbody>
     </table>
 
-    <p align="center" style="margin-top: 100px;"><small>by zhangxinxu(.com)</small> <a href="https://www.zhangxinxu.com/wordpress/?p=10349">使用文档</a></p>
 
     <template id="tpl">
         ${data.map(function (obj, index) {
@@ -90,68 +89,25 @@
           }).join('')}
     </template>
 
-    <script type="module" src="./js/ui-audio.js"></script>
+    <script type="module" src="../js/ui-audio.js"></script>
     <script type="module">
         const dataList = [{
             id: '0001',
-            title: '语音 第一段 得瑟',
-            duration: '16',
-            url: './audio/01.mp3'
+            title: 'Hello Song',
+            url: '../audio/hellohello.m4a'
         }, {
             id: '0002',
-            title: '语音 第二段 现身',
-            duration: '10',
-            url: './audio/02.mp3'
+            title: 'Every day I go to school',
+            url: '../audio/everyDaySchool.mp3'
         }, {
             id: '0003',
-            title: '语音 第三段 惋惜',
-            duration: '10',
-            url: './audio/03.mp3'
+            title: 'I can follow the rules',
+            url: '../audio/followRules.m4a'
         }, {
             id: '0004',
-            title: '语音 第四段 旁白 错误认识',
+            title: 'The first day of school',
             duration: '9',
-            url: './audio/04.mp3'
-        }, {
-            id: '0005',
-            title: '语音 第五段 提醒',
-            duration: '13',
-            url: './audio/05.mp3'
-        }, {
-            id: '0006',
-            title: '语音 第六段 确认',
-            duration: '17',
-            url: './audio/06.mp3'
-        }, {
-            id: '0007',
-            title: '语音 第七段 承认',
-            duration: '10',
-            url: './audio/07.mp3'
-        }, {
-            id: '0008',
-            title: '语音 第八段 攻击',
-            duration: '9',
-            url: './audio/08.mp3'
-        }, {
-            id: '0009',
-            title: '语音 第十段 防御',
-            duration: '10',
-            url: './audio/09.mp3'
-        }, {
-            id: '00010',
-            title: '语音 第十一段 反击',
-            duration: '14',
-            url: './audio/10.mp3'
-        }, {
-            id: '00011',
-            title: '语音 第十二段 水龙弹',
-            duration: '7',
-            url: './audio/11.mp3'
-        }, {
-            id: '00012',
-            title: '语音 第十三段 嘲笑',
-            duration: '11',
-            url: './audio/12.mp3'
+            url: '../audio/firstDaySchool.mp3'
         }];
 
         String.prototype.interpolate = function (params) {
