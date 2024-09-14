@@ -5,7 +5,7 @@
  * @description 音频播放器，基于 Web Audio API，兼容现代浏览器，依赖于 howler.js（https://github.com/goldfire/howler.js/）
 **/
 
-import './howler.js';
+import './howler.min.js';
 
 class UiAudio extends HTMLElement {
     static get observedAttributes () {
