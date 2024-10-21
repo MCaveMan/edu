@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta description="目录">
+  <script src="https://cdn.jsdelivr.net/npm/video.js@8.19.1/dist/video.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@8.19.1/dist/video-js.min.css">
+  <style>
+    #playlist {
+      list-style-type: none;
+      padding: 0;
+    }
+    #playlist li {
+      padding: 10px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+    }
+    #playlist li:hover {
+      background-color: #f0f0f0;
+    }
+    #playlist li.active {
+      background-color: #4CAF50; /* Green highlight */
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <video id="my-player" class="video-js" controls preload="auto" data-setup='{}'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank">
+        supports HTML5 video
+      </a>
+    </p>
+  </video>
+  <br />
+  <span id="videoTitle" ></span>
+  <br />
+  <button id="nextTrack">下一首</button>
+  <button id="preTrack">上一首</button>
+  <br />
+  <ul id="playlist">
+  </ul>
+  <script>
+    const audioSources = [
+      { src: 'https://edu.1659.us.kg/audio/followRules.m4a', type: 'audio/mpeg', title: 'I can follow the rules'},
+      { src: 'https://edu.1659.us.kg/audio/firstDaySchool.mp3', type: 'audio/mpeg', title: 'The first day of school' },
+      { src: 'https://edu.1659.us.kg/audio/hellohello.m4a', type: 'audio/mpeg', title: 'Hello Song' },
+      { src: 'https://edu.1659.us.kg/audio/everyDaySchool.mp3', type: 'audio/mpeg', title: 'Every day I go to school' },
+    ];
+    const playAudio = () => {
+      updatePlaylistHighlight();
+      document.getElementById('videoTitle').innerHTML = audioSources[currentTrackIndex].title;
+      player.src(audioSources[currentTrackIndex].src);
+      player.load();
+      player.play();
+    };
+    let currentTrackIndex = 0;
+    const player = videojs('my-player', {
+      autoplay: true,
+      controls: true,
+      width: 500,
+      height:50,
+      sources: [audioSources[currentTrackIndex]], // Start with the first track
+    });
+
+  const playlist = document.getElementById('playlist');
+  function updatePlaylistHighlight() {
+      const listItems = playlist.querySelectorAll('li');
+      listItems.forEach(item => item.classList.remove('active'));
+      listItems[currentTrackIndex].classList.add('active');
+    }
+// Function to dynamically create playlist items
+  function createPlaylistItems(sources) {
+    playlist.innerHTML = ''; // Clear existing list items
+    sources.forEach(source => {
+      const li = document.createElement('li');
+      li.textContent = source.title;
+      li.dataset.src = source.src;
+      li.addEventListener('click', () => {
+        const index = audioSources.indexOf(source);
+        currentTrackIndex = index;
+        updatePlaylistHighlight();
+        document.getElementById('videoTitle').innerHTML = source.title;
+        player.src(source.src);
+        player.load();
+        player.play();
+      });
+      playlist.appendChild(li);
+    });
+  }
+
+    player.on('ready', () => {
+      playAudio();
+    });
+    
+    player.on('ended', () => {
+      currentTrackIndex++;
+      if (currentTrackIndex >= audioSources.length) {
+        currentTrackIndex = 0; // Loop back to the beginning
+      }
+      playAudio();
+    });
+    document.getElementById('nextTrack').addEventListener('click', () => {
+      currentTrackIndex++;
+      if (currentTrackIndex >= audioSources.length) {
+        currentTrackIndex = 0;
+      }
+      playAudio();
+    });
+    document.getElementById('preTrack').addEventListener('click', () => {
+
+      currentTrackIndex--;
+      if (currentTrackIndex < 0) {
+        currentTrackIndex = audioSources.length - 1;
+      }
+      playAudio();
+    });
+
+    createPlaylistItems(audioSources); // Create the playlist on page load
+
+
+  </script>
+</body>
+
+</html>
