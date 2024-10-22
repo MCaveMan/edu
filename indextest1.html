@@ -52,9 +52,7 @@
       { src: 'https://edu.1659.us.kg/audio/everyDaySchool.mp3', type: 'audio/mpeg', title: 'Every day I go to school' },
     ];
     let audioIndex = 0; // 当前播放的音频索引
-     // 加载完页面默认播放音频文件
-    audio.src = audioList[audioIndex].src;
-    audio.play();
+     
     prevButton.addEventListener("click", function() {
       audioIndex--;
       if (audioIndex < 0) {
@@ -109,7 +107,8 @@
   }
 
   createPlaylistItems(audioList);
-  
+  // 加载完页面默认播放音频文件
+  playAudio();
   </script>
   
 </body>

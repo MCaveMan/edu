@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta description="目录">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <script src="https://cdn.jsdelivr.net/npm/video.js@8.19.1/dist/video.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@8.19.1/dist/video-js.min.css">
   <style>
@@ -29,23 +31,28 @@
 </head>
 
 <body>
-  <video id="my-player" class="video-js" controls preload="auto" data-setup='{}'>
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank">
-        supports HTML5 video
-      </a>
-    </p>
-  </video>
-  <br />
-  <span id="videoTitle" ></span>
-  <br />
-  <button id="nextTrack">下一首</button>
-  <button id="preTrack">上一首</button>
-  <br />
-  <ul id="playlist">
-  </ul>
+  <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <span id="videoTitle" ></span>
+  </div>
+  <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <video id="my-player" class="video-js" controls preload="auto" data-setup='{}'>
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+          supports HTML5 video
+        </a>
+      </p>
+    </video>
+  </div>
+  <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <button id="nextTrack">下一首</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="preTrack">上一首</button>
+  </div>
+  <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <ul id="playlist">
+    </ul>
+  </div>
   <script>
     const audioSources = [
       { src: 'https://edu.1659.us.kg/audio/followRules.m4a', type: 'audio/mpeg', title: 'I can follow the rules'},
