@@ -38,6 +38,8 @@
   <br>
   <ul id="playlist">
   </ul>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <script>
     let audio = document.getElementById("audio");
     let prevButton = document.getElementById("prev");
@@ -110,9 +112,18 @@
     });
   }
 
-  
-
   createPlaylistItems(audioList);
+  if (navigator.userAgent.match(/(iPhone|iPod|iPad)/i)) {
+    audio.onplay = function() {
+      document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === "hidden") {
+          audio.pause();
+        } else {
+          audio.play();
+        }
+      });
+    };
+  }
   </script>
   
 </body>
