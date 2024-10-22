@@ -113,17 +113,7 @@
   }
 
   createPlaylistItems(audioList);
-  if (navigator.userAgent.match(/(iPhone|iPod|iPad)/i)) {
-    audio.onplay = function() {
-      document.addEventListener("visibilitychange", function() {
-        if (document.visibilityState === "hidden") {
-          audio.pause();
-        } else {
-          audio.play();
-        }
-      });
-    };
-  }
+  
   </script>
   
 </body>
