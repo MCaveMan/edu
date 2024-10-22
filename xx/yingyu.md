@@ -4,7 +4,7 @@
 
 Hello:
 
-<audio controls="controls" loop="loop" src="../audio/hellohello.m4a"></audio>
+<audio controls="controls" loop="loop" src="../audio/hellohello.mp3"></audio>
 
 Every day I go to school:
 
@@ -12,7 +12,7 @@ Every day I go to school:
 
 I can follow the rules:
 
-<audio controls="controls" loop="loop" src="../audio/followRules.m4a"></audio>
+<audio controls="controls" loop="loop" src="../audio/followRules.mp3"></audio>
 
 The first day of school:
 
