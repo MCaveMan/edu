@@ -13,6 +13,7 @@
     #playlist {
       list-style-type: none;
       padding: 0;
+      width:90%;
     }
     #playlist li {
       padding: 10px;
@@ -46,8 +47,9 @@
     </video>
   </div>
   <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-    <button id="nextTrack">下一首</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <button id="preTrack">上一首</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="nextTrack">下一首</button> 
   </div>
   <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
     <ul id="playlist">
@@ -71,7 +73,7 @@
     const player = videojs('my-player', {
       autoplay: true,
       controls: true,
-      width: 500,
+      width: 800,
       height:50,
       sources: [audioSources[currentTrackIndex]], // Start with the first track
     });
