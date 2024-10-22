@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta description="目录">
   <style>
     #playlist {
@@ -38,8 +40,7 @@
   <br>
   <ul id="playlist">
   </ul>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
   <script>
     let audio = document.getElementById("audio");
     let prevButton = document.getElementById("prev");
@@ -101,11 +102,6 @@
       li.addEventListener('click', () => {
         const index = audioList.indexOf(source);
         audioIndex = index;
-        // updatePlaylistHighlight();
-        // document.getElementById('videoTitle').innerHTML = source.title;
-        // audio.src = source.src;
-        // audio.load();
-        // audio.play();
         playAudio();
       });
       playlist.appendChild(li);
