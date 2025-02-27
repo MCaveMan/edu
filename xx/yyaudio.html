@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>儿童音乐播放器</title>
+    <title>英语音频</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.14/iconfont/material-icons.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -105,6 +106,7 @@
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1.5);
             position: relative;
             touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .ctrl-btn:hover {
@@ -145,10 +147,14 @@
             --shadow-hover: rgba(107,255,170,0.4);
         }
 
-        .btn-icon {
-            font-size: 1.8em;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
-            transition: transform 0.3s;
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 32px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
 
         #play-icon { display: block; }
@@ -193,7 +199,6 @@
             animation: selectBounce 0.5s ease;
         }
 
-        /* 移动端优化 */
         @media (max-width: 768px) {
             .player {
                 border-radius: 30px;
@@ -222,8 +227,8 @@
             #prev-btn { order: 1; }
             #next-btn { order: 3; }
 
-            .btn-icon {
-                font-size: 1.5em;
+            .material-icons {
+                font-size: 28px;
             }
 
             .song-title {
@@ -260,15 +265,15 @@
             }
 
             .ctrl-btn {
-                --size: 50px;
+                --size: 56px;
             }
 
             #play-pause-btn {
-                --size: 60px;
+                --size: 64px;
             }
 
-            .btn-icon {
-                font-size: 1.2em;
+            .material-icons {
+                font-size: 24px;
             }
 
             .song-title {
@@ -313,14 +318,14 @@
 
         <div class="controls">
             <button class="ctrl-btn" id="prev-btn">
-                <span class="btn-icon">⏮</span>
+                <i class="material-icons">skip_previous</i>
             </button>
             <button class="ctrl-btn" id="play-pause-btn">
-                <span class="btn-icon" id="play-icon">▶</span>
-                <span class="btn-icon" id="pause-icon">⏸</span>
+                <i class="material-icons" id="play-icon">play_arrow</i>
+                <i class="material-icons" id="pause-icon">pause</i>
             </button>
             <button class="ctrl-btn" id="next-btn">
-                <span class="btn-icon">⏭</span>
+                <i class="material-icons">skip_next</i>
             </button>
         </div>
 
@@ -331,11 +336,11 @@
 
     <script>
         const playlist = [
-            { src: 'audio/song1.mp3', title: '快乐上学歌' },
-            { src: 'audio/song2.mp3', title: '数字拍拍手' },
-            { src: 'audio/song3.mp3', title: '动物音乐会' },
-            { src: 'audio/song4.mp3', title: '彩虹的约定' },
-            { src: 'audio/song5.mp3', title: '星星眨眼睛' }
+            { src: '../audio/followRules.mp3', title: 'I can follow the rules' },
+            { src: '../audio/firstDaySchool.mp3', title: 'The first day of school' },
+            { src: '../audio/hellohello.mp3', title: 'Hello Song' },
+            { src: '../audio/everyDaySchool.mp3', title: 'Every day I go to school' },
+            { src: '../audio/threelittlemonkey.mp3', title: 'Three little monkey' }
         ];
 
         const audio = document.getElementById('audio-player');
@@ -371,6 +376,7 @@
             
             updatePlaylistActive();
             smartScrollToCurrent();
+            syncPlayerState();
         }
 
         // 更新播放列表高亮
@@ -424,6 +430,11 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
+        // 状态同步
+        function syncPlayerState() {
+            playPauseBtn.classList.toggle('playing', !audio.paused);
+        }
+
         // 事件监听
         audio.addEventListener('timeupdate', () => {
             progressBar.value = (audio.currentTime / audio.duration) * 100 || 0;
@@ -438,14 +449,8 @@
             audio.paused ? audio.play() : audio.pause();
         });
 
-        audio.addEventListener('play', () => {
-            playPauseBtn.classList.add('playing');
-            updatePlaylistActive();
-        });
-
-        audio.addEventListener('pause', () => {
-            playPauseBtn.classList.remove('playing');
-        });
+        audio.addEventListener('play', syncPlayerState);
+        audio.addEventListener('pause', syncPlayerState);
 
         document.getElementById('prev-btn').addEventListener('click', () => {
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
