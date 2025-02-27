@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英语音频</title>
+    <title>小学生音频播放器</title>
     <style>
         body {
-            background: linear-gradient(to bottom, #fffacd, #87ceeb); /* 明亮渐变背景 */
+            background: linear-gradient(to bottom, #fffacd, #87ceeb);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -14,7 +14,7 @@
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* 卡通字体 */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
         }
 
         .player {
@@ -36,7 +36,7 @@
         .now-playing h3 {
             margin: 0;
             font-size: clamp(20px, 5vw, 26px);
-            color: #ff4500; /* 橙色标题 */
+            color: #ff4500;
         }
 
         .progress-container {
@@ -51,7 +51,7 @@
             flex-grow: 1;
             margin: 0 15px;
             -webkit-appearance: none;
-            background: linear-gradient(to right, #ff4500, #ffd700, #32cd32); /* 彩虹渐变 */
+            background: linear-gradient(to right, #ff4500, #ffd700, #32cd32);
             height: 12px;
             border-radius: 6px;
             outline: none;
@@ -64,7 +64,7 @@
             width: 24px;
             height: 24px;
             background: #fff;
-            border: 4px solid #ff69b4; /* 粉色边框 */
+            border: 4px solid #ff69b4;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -81,7 +81,7 @@
         #current-time, #duration {
             font-size: clamp(14px, 3.5vw, 18px);
             color: #fff;
-            background: #ff69b4; /* 粉色背景 */
+            background: #ff69b4;
             padding: 6px 12px;
             border-radius: 12px;
             min-width: 45px;
@@ -91,15 +91,15 @@
         .controls {
             display: flex;
             justify-content: center;
-            gap: 2rem; /* 增大间距 */
+            gap: 2rem;
             margin-bottom: 2rem;
         }
 
         button {
-            width: clamp(70px, 18vw, 80px); /* 更大按钮 */
+            width: clamp(70px, 18vw, 80px);
             height: clamp(70px, 18vw, 80px);
-            background: #ffd700; /* 黄色背景 */
-            color: #ff4500; /* 橙色图标 */
+            background: #ffd700;
+            color: #ff4500;
             border: 4px solid #ff4500;
             border-radius: 50%;
             font-size: clamp(28px, 7vw, 34px);
@@ -110,24 +110,30 @@
         }
 
         button:hover {
-            background: #ffcc00; /* 悬停变浅 */
-            transform: scale(1.1); /* 放大效果 */
+            background: #ffcc00;
+            transform: scale(1.1);
         }
 
         button:active {
-            transform: scale(0.95); /* 点击缩小 */
+            transform: scale(0.95);
+            background: #ffaa00; /* 点击时变深 */
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         #play-pause-btn.playing {
-            background: #32cd32; /* 播放时变绿色 */
+            background: #32cd32;
+            color: #fff;
+        }
+
+        #prev-btn:active, #next-btn:active {
+            background: #32cd32; /* 点击时变绿色 */
             color: #fff;
         }
 
         .playlist {
             max-height: 30vh;
             overflow-y: auto;
-            background: #f0f8ff; /* 浅蓝色背景 */
+            background: #f0f8ff;
             border-radius: 15px;
             padding: 15px;
         }
@@ -148,7 +154,7 @@
         .playlist li {
             padding: 1rem;
             cursor: pointer;
-            background: #ffd700; /* 黄色卡片 */
+            background: #ffd700;
             border-radius: 12px;
             margin: 0.6rem 0;
             font-size: clamp(16px, 4vw, 20px);
@@ -160,20 +166,19 @@
         }
 
         .playlist li::before {
-            content: "🎵"; /* 音乐符图标 */
+            content: "🎵";
             font-size: 24px;
         }
 
         .playlist li:hover {
-            background: #ffcc00; /* 悬停变浅 */
+            background: #ffcc00;
         }
 
         .playlist li.active {
-            background: #ff4500; /* 播放中变橙色 */
+            background: #ff4500;
             color: #fff;
         }
 
-        /* 媒体查询：小屏幕优化 */
         @media (max-width: 480px) {
             .player {
                 padding: 20px;
@@ -243,6 +248,17 @@
             });
         }
 
+        // 更新按钮状态
+        function updatePlayPauseButton() {
+            if (isPlaying) {
+                playPauseBtn.textContent = "⏸";
+                playPauseBtn.classList.add('playing');
+            } else {
+                playPauseBtn.textContent = "▶";
+                playPauseBtn.classList.remove('playing');
+            }
+        }
+
         // 加载歌曲并滚动到当前歌曲
         function loadSong(index) {
             const song = playlist[index];
@@ -267,8 +283,8 @@
             const items = playlistItems.getElementsByTagName('li');
             if (items[currentSongIndex]) {
                 items[currentSongIndex].scrollIntoView({ 
-                    behavior: 'smooth', // 平滑滚动
-                    block: 'center' // 将歌曲置于可视区域中间
+                    behavior: 'smooth',
+                    block: 'center'
                 });
             }
         }
@@ -277,23 +293,19 @@
         function togglePlayPause() {
             if (isPlaying) {
                 audioPlayer.pause();
-                playPauseBtn.textContent = "▶";
-                playPauseBtn.classList.remove('playing');
             } else {
                 audioPlayer.play();
-                playPauseBtn.textContent = "⏸";
-                playPauseBtn.classList.add('playing');
             }
             isPlaying = !isPlaying;
+            updatePlayPauseButton();
         }
 
         // 播放指定歌曲
         function playSong(index) {
             loadSong(index);
             audioPlayer.play();
-            playPauseBtn.textContent = "⏸";
-            playPauseBtn.classList.add('playing');
             isPlaying = true;
+            updatePlayPauseButton();
         }
 
         // 上一曲
