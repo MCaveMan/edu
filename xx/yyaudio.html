@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- iOS 后台播放关键声明 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="英语音频">
     <title>英语音频</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.14/iconfont/material-icons.min.css">
     <style>
@@ -328,7 +332,7 @@
 </head>
 <body>
     <div class="player">
-        <audio id="audio-player"></audio>
+        <audio id="audio-player" playsinline></audio>
         
         <div class="now-playing">
             <h2 class="song-title" id="song-title">请选择歌曲</h2>
@@ -358,6 +362,7 @@
     </div>
 
     <script>
+        // 音频播放列表
         const playlist = [
             { src: '../audio/followRules.mp3', title: 'I can follow the rules' },
             { src: '../audio/firstDaySchool.mp3', title: 'The first day of school' },
@@ -366,6 +371,7 @@
             { src: '../audio/threelittlemonkey.mp3', title: 'Three little monkey' }
         ];
 
+        // 核心元素引用
         const audio = document.getElementById('audio-player');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const progressBar = document.getElementById('progress-bar');
@@ -373,6 +379,15 @@
         const playlistItems = document.getElementById('playlist-items');
         let currentSongIndex = 0;
         let touchStartX = 0;
+
+        // 初始化播放器
+        function initPlayer() {
+            initPlaylist();
+            setupEventListeners();
+            registerServiceWorker();
+            setupMediaSession();
+            handleIOSAudioContext();
+        }
 
         // 初始化播放列表
         function initPlaylist() {
@@ -386,20 +401,83 @@
             document.querySelector(`.song-item[data-index="0"]`).classList.add('active');
         }
 
-        // 播放指定歌曲
+        // 播放指定歌曲（iOS兼容版）
         function playSong(index) {
-            currentSongIndex = index;
-            const song = playlist[index];
-            
-            audio.src = song.src;
-            audio.play().catch(error => {
-                console.log('自动播放被阻止');
-            });
-            songTitle.textContent = song.title;
-            
-            updatePlaylistActive();
-            smartScrollToCurrent();
-            syncPlayerState();
+            const playAudio = () => {
+                currentSongIndex = index;
+                const song = playlist[index];
+                
+                audio.src = song.src;
+                audio.play().catch(error => {
+                    console.log('播放错误:', error);
+                });
+                songTitle.textContent = song.title;
+                
+                updatePlaylistActive();
+                smartScrollToCurrent();
+                syncPlayerState();
+                updateMetadata();
+                
+                // 移除事件监听（只执行一次）
+                document.removeEventListener('click', playAudio);
+            };
+
+            // iOS首次播放需要用户点击
+            if (!audio.src) {
+                document.addEventListener('click', playAudio);
+            } else {
+                playAudio();
+            }
+        }
+
+        // 注册媒体会话（控制中心）
+        function setupMediaSession() {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.setActionHandler('play', () => audio.play());
+                navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+                navigator.mediaSession.setActionHandler('previoustrack', () => prevSong());
+                navigator.mediaSession.setActionHandler('nexttrack', () => nextSong());
+            }
+        }
+
+        // 更新媒体元数据
+        function updateMetadata() {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: playlist[currentSongIndex].title,
+                    artist: '英语学习',
+                    artwork: [
+                        { src: 'icon-192x192.png', sizes: '192x192', type: 'image/png' },
+                        { src: 'icon-512x512.png', sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+            }
+        }
+
+        // 注册Service Worker（需HTTPS）
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(() => console.log('Service Worker 注册成功'))
+                    .catch(err => console.log('注册失败：', err));
+            }
+        }
+
+        // 处理iOS音频上下文
+        function handleIOSAudioContext() {
+            let audioContext;
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                document.addEventListener('click', () => {
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume().then(() => {
+                            console.log('音频上下文已恢复');
+                        });
+                    }
+                });
+            } catch (e) {
+                console.log('音频上下文初始化失败:', e);
+            }
         }
 
         // 更新播放列表高亮
@@ -458,66 +536,77 @@
             playPauseBtn.classList.toggle('playing', !audio.paused);
         }
 
-        // 事件监听
-        audio.addEventListener('timeupdate', () => {
-            progressBar.value = (audio.currentTime / audio.duration) * 100 || 0;
-            document.getElementById('current-time').textContent = formatTime(audio.currentTime);
-        });
+        // 事件监听设置
+        function setupEventListeners() {
+            audio.addEventListener('timeupdate', () => {
+                progressBar.value = (audio.currentTime / audio.duration) * 100 || 0;
+                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+                
+                // 更新媒体会话进度
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.setPositionState({
+                        duration: audio.duration,
+                        playbackRate: audio.playbackRate,
+                        position: audio.currentTime
+                    });
+                }
+            });
 
-        audio.addEventListener('loadedmetadata', () => {
-            document.getElementById('duration').textContent = formatTime(audio.duration);
-        });
+            audio.addEventListener('loadedmetadata', () => {
+                document.getElementById('duration').textContent = formatTime(audio.duration);
+            });
 
-        playPauseBtn.addEventListener('click', () => {
-            audio.paused ? audio.play() : audio.pause();
-        });
+            playPauseBtn.addEventListener('click', () => {
+                audio.paused ? audio.play() : audio.pause();
+            });
 
-        audio.addEventListener('play', syncPlayerState);
-        audio.addEventListener('pause', syncPlayerState);
+            audio.addEventListener('play', syncPlayerState);
+            audio.addEventListener('pause', syncPlayerState);
 
-        document.getElementById('prev-btn').addEventListener('click', () => {
+            document.getElementById('prev-btn').addEventListener('click', prevSong);
+            document.getElementById('next-btn').addEventListener('click', nextSong);
+
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+
+            audio.addEventListener('ended', nextSong);
+
+            // 滑动切歌
+            document.querySelector('.playlist').addEventListener('touchstart', e => {
+                touchStartX = e.touches[0].clientX;
+            });
+
+            document.querySelector('.playlist').addEventListener('touchend', e => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diffX = touchStartX - touchEndX;
+
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                    } else {
+                        currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+                    }
+                    playSong(currentSongIndex);
+                }
+            });
+        }
+
+        // 切歌功能
+        function prevSong() {
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
             playSong(currentSongIndex);
-        });
+        }
 
-        document.getElementById('next-btn').addEventListener('click', () => {
+        function nextSong() {
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
             playSong(currentSongIndex);
-        });
+        }
 
-        progressBar.addEventListener('click', (e) => {
-            const rect = progressBar.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pos * audio.duration;
-        });
-
-        audio.addEventListener('ended', () => {
-            currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            playSong(currentSongIndex);
-        });
-
-        // 滑动切歌
-        document.querySelector('.playlist').addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-        });
-
-        document.querySelector('.playlist').addEventListener('touchend', e => {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diffX = touchStartX - touchEndX;
-
-            if (Math.abs(diffX) > 50) {
-                if (diffX > 0) {
-                    currentSongIndex = (currentSongIndex + 1) % playlist.length;
-                } else {
-                    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-                }
-                playSong(currentSongIndex);
-            }
-        });
-
-        // 初始化
-        initPlaylist();
-        playSong(0);
+        // 启动播放器
+        initPlayer();
     </script>
 </body>
 </html>
