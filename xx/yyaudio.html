@@ -88,7 +88,6 @@
             text-align: center;
         }
 
-        /* 修改后的按钮样式 */
         .controls {
             display: flex;
             justify-content: center;
@@ -124,11 +123,6 @@
             background: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 80%);
             opacity: 0;
             transition: opacity 0.3s;
-        }
-
-        button span {
-            display: inline-block;
-            transition: transform 0.3s;
         }
 
         button:hover {
@@ -169,13 +163,29 @@
             box-shadow: 0 8px 15px rgba(107, 255, 170, 0.3);
         }
 
+        /* 新增播放/暂停图标切换 */
+        #play-pause-btn .play-icon { 
+            display: inline-block;
+            transition: all 0.3s;
+            transform: scale(1);
+        }
+        #play-pause-btn .pause-icon { 
+            display: none;
+            transition: all 0.3s;
+            transform: scale(0.8) rotate(30deg);
+        }
+
+        #play-pause-btn.playing .play-icon { 
+            display: none;
+        }
+        #play-pause-btn.playing .pause-icon { 
+            display: inline-block;
+            transform: scale(1.2) rotate(0deg);
+        }
+
         #play-pause-btn.playing {
             background: linear-gradient(145deg, #ff4757, #ff6b8b);
             animation: none;
-        }
-
-        #play-pause-btn.playing span {
-            transform: rotate(360deg);
         }
 
         button::before {
@@ -267,9 +277,12 @@
             <span id="duration">0:00</span>
         </div>
         <div class="controls">
-            <button id="prev-btn" data-label="上一首">🐾</button>
-            <button id="play-pause-btn" data-label="播放/暂停"><span>🎵</span></button>
-            <button id="next-btn" data-label="下一首">🐾</button>
+            <button id="prev-btn" data-label="上一首">⏪</button>
+            <button id="play-pause-btn" data-label="播放/暂停">
+                <span class="play-icon">▶</span>
+                <span class="pause-icon">⏸</span>
+            </button>
+            <button id="next-btn" data-label="下一首">⏩</button>
         </div>
         <div class="playlist">
             <h4>播放列表</h4>
@@ -285,7 +298,6 @@
             { src: '../audio/threelittlemonkey.mp3', type: 'audio/mpeg', title: 'Three little monkey' }
         ];
 
-        // 获取 DOM 元素
         const audioPlayer = document.getElementById("audio-player");
         const playPauseBtn = document.getElementById("play-pause-btn");
         const prevBtn = document.getElementById("prev-btn");
@@ -299,7 +311,6 @@
         let currentSongIndex = 0;
         let isPlaying = false;
 
-        // 初始化播放列表
         function loadPlaylist() {
             playlistItems.innerHTML = "";
             playlist.forEach((song, index) => {
@@ -311,7 +322,6 @@
             });
         }
 
-        // 更新按钮状态
         function updatePlayPauseButton() {
             if (isPlaying) {
                 playPauseBtn.classList.add('playing');
@@ -320,7 +330,6 @@
             }
         }
 
-        // 加载歌曲并滚动到当前歌曲
         function loadSong(index) {
             const song = playlist[index];
             audioPlayer.src = song.src;
@@ -331,7 +340,6 @@
             scrollToCurrentSong();
         }
 
-        // 更新播放列表 UI
         function updatePlaylistUI() {
             const items = playlistItems.getElementsByTagName('li');
             for (let i = 0; i < items.length; i++) {
@@ -339,7 +347,6 @@
             }
         }
 
-        // 滚动到当前播放的歌曲
         function scrollToCurrentSong() {
             const items = playlistItems.getElementsByTagName('li');
             if (items[currentSongIndex]) {
@@ -350,7 +357,6 @@
             }
         }
 
-        // 播放/暂停
         function togglePlayPause() {
             if (isPlaying) {
                 audioPlayer.pause();
@@ -361,7 +367,6 @@
             updatePlayPauseButton();
         }
 
-        // 播放指定歌曲
         function playSong(index) {
             loadSong(index);
             audioPlayer.play();
@@ -369,51 +374,42 @@
             updatePlayPauseButton();
         }
 
-        // 上一曲
         function playPrevious() {
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
             playSong(currentSongIndex);
         }
 
-        // 下一曲
         function playNext() {
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
             playSong(currentSongIndex);
         }
 
-        // 格式化时间
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // 更新总时长
         function updateDuration() {
             progressBar.max = audioPlayer.duration;
             durationEl.textContent = formatTime(audioPlayer.duration);
         }
 
-        // 更新进度条和当前时间
         audioPlayer.addEventListener("timeupdate", () => {
             progressBar.value = audioPlayer.currentTime;
             currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
         });
 
-        // 调整播放进度
         progressBar.addEventListener("input", () => {
             audioPlayer.currentTime = progressBar.value;
         });
 
-        // 歌曲结束后自动播放下一曲
         audioPlayer.addEventListener("ended", playNext);
 
-        // 事件监听
         playPauseBtn.addEventListener("click", togglePlayPause);
         prevBtn.addEventListener("click", playPrevious);
         nextBtn.addEventListener("click", playNext);
 
-        // 初始化
         loadPlaylist();
         loadSong(0);
     </script>
