@@ -69,17 +69,40 @@
             cursor: pointer;
         }
 
-        #progress-bar::-webkit-progress-value {
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #a1c4fd);
-            transition: width 0.3s ease;
-        }
-
         .time-display {
             color: #ff9a9e;
             font-size: 14px;
             font-weight: bold;
             min-width: 55px;
             text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .progress-container {
+                gap: 8px;
+                margin-top: 15px;
+            }
+
+            #progress-bar {
+                margin: 0 10px;
+                height: 8px;
+            }
+
+            .time-display {
+                font-size: 12px;
+                min-width: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .progress-container {
+                gap: 5px;
+            }
+
+            .time-display {
+                font-size: 11px;
+                min-width: 40px;
+            }
         }
 
         .controls {
