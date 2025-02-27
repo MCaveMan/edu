@@ -3,186 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英语音频</title>
+    <title>音频播放器</title>
     <style>
         body {
-            background: linear-gradient(to bottom, #fffacd, #87ceeb); /* 明亮渐变背景 */
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* 卡通字体 */
         }
-
         .player {
-            width: 90vw;
-            max-width: 450px;
-            min-width: 300px;
+            width: 90vw; /* 相对屏幕宽度 */
+            max-width: 400px; /* 最大宽度 */
+            min-width: 280px; /* 最小宽度 */
             background: #fff;
-            border-radius: 30px;
-            padding: 25px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-
         .now-playing {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
-
         .now-playing h3 {
             margin: 0;
-            font-size: clamp(20px, 5vw, 26px);
-            color: #ff4500; /* 橙色标题 */
+            font-size: clamp(16px, 5vw, 20px); /* 自适应字体 */
         }
-
+        .now-playing p {
+            margin: 0.3rem 0 0;
+            color: #666;
+            font-size: clamp(12px, 4vw, 16px);
+        }
         .progress-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             width: 100%;
         }
-
         #progress-bar {
             flex-grow: 1;
-            margin: 0 15px;
+            margin: 0 10px;
             -webkit-appearance: none;
-            background: linear-gradient(to right, #ff4500, #ffd700, #32cd32); /* 彩虹渐变 */
-            height: 12px;
-            border-radius: 6px;
+            background: #ddd;
+            height: 6px;
+            border-radius: 5px;
             outline: none;
             cursor: pointer;
-            touch-action: none;
+            touch-action: none; /* 优化触控 */
         }
-
         #progress-bar::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            background: #fff;
-            border: 4px solid #ff69b4; /* 粉色边框 */
+            width: 16px;
+            height: 16px;
+            background: #007aff;
             border-radius: 50%;
             cursor: pointer;
         }
-
         #progress-bar::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            background: #fff;
-            border: 4px solid #ff69b4;
+            width: 16px;
+            height: 16px;
+            background: #007aff;
             border-radius: 50%;
             cursor: pointer;
         }
-
         #current-time, #duration {
-            font-size: clamp(14px, 3.5vw, 18px);
-            color: #fff;
-            background: #ff69b4; /* 粉色背景 */
-            padding: 6px 12px;
-            border-radius: 12px;
-            min-width: 45px;
+            font-size: clamp(10px, 3vw, 14px);
+            color: #666;
+            min-width: 40px;
             text-align: center;
         }
-
         .controls {
             display: flex;
             justify-content: center;
-            gap: 2rem; /* 增大间距 */
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
-
         button {
-            width: clamp(70px, 18vw, 80px); /* 更大按钮 */
-            height: clamp(70px, 18vw, 80px);
-            background: #ffd700; /* 黄色背景 */
-            color: #ff4500; /* 橙色图标 */
-            border: 4px solid #ff4500;
-            border-radius: 50%;
-            font-size: clamp(28px, 7vw, 34px);
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            touch-action: manipulation;
-        }
-
-        button:hover {
-            background: #ffcc00; /* 悬停变浅 */
-            transform: scale(1.1); /* 放大效果 */
-        }
-
-        button:active {
-            transform: scale(0.95); /* 点击缩小 */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        #play-pause-btn.playing {
-            background: #32cd32; /* 播放时变绿色 */
+            width: clamp(50px, 15vw, 60px); /* 自适应按钮大小 */
+            height: clamp(50px, 15vw, 60px);
+            background: linear-gradient(145deg, #007aff, #005bb5);
             color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: clamp(20px, 6vw, 24px);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            touch-action: manipulation; /* 优化触控 */
         }
-
+        button:hover {
+            background: linear-gradient(145deg, #005bb5, #003f7f);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        button:active {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateY(2px);
+        }
         .playlist {
-            max-height: 30vh;
+            max-height: 25vh; /* 相对高度 */
             overflow-y: auto;
-            background: #f0f8ff; /* 浅蓝色背景 */
-            border-radius: 15px;
-            padding: 15px;
         }
-
         .playlist h4 {
-            margin: 0 0 1rem;
-            font-size: clamp(18px, 4.5vw, 22px);
-            color: #ff4500;
-            text-align: center;
+            margin: 0 0 0.5rem;
+            font-size: clamp(14px, 4vw, 18px);
         }
-
         .playlist ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-
         .playlist li {
-            padding: 1rem;
+            padding: 0.8rem;
             cursor: pointer;
-            background: #ffd700; /* 黄色卡片 */
-            border-radius: 12px;
-            margin: 0.6rem 0;
-            font-size: clamp(16px, 4vw, 20px);
-            color: #ff4500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: background 0.3s ease;
+            border-bottom: 1px solid #eee;
+            font-size: clamp(12px, 4vw, 16px);
         }
-
-        .playlist li::before {
-            content: "🎵"; /* 音乐符图标 */
-            font-size: 24px;
-        }
-
         .playlist li:hover {
-            background: #ffcc00; /* 悬停变浅 */
+            background: #f0f0f0;
         }
-
-        .playlist li.active {
-            background: #ff4500; /* 播放中变橙色 */
-            color: #fff;
-        }
-
         /* 媒体查询：小屏幕优化 */
         @media (max-width: 480px) {
             .player {
-                padding: 20px;
+                padding: 15px;
+            }
+            .progress-container {
+                margin-bottom: 0.8rem;
             }
             .controls {
-                gap: 1.5rem;
-            }
-            .playlist li {
-                padding: 0.8rem;
+                gap: 0.8rem;
             }
         }
     </style>
@@ -192,6 +146,7 @@
         <audio id="audio-player"></audio>
         <div class="now-playing">
             <h3 id="song-title">选择一首歌</h3>
+            <p id="artist">未知艺术家</p>
         </div>
         <div class="progress-container">
             <span id="current-time">0:00</span>
@@ -209,12 +164,14 @@
         </div>
     </div>
     <script>
+
         const playlist = [
-            { src: '../audio/followRules.mp3', type: 'audio/mpeg', title: 'I can follow the rules' },
+            { src: '../audio/followRules.mp3', type: 'audio/mpeg', title: 'I can follow the rules'},
             { src: '../audio/firstDaySchool.mp3', type: 'audio/mpeg', title: 'The first day of school' },
             { src: '../audio/hellohello.mp3', type: 'audio/mpeg', title: 'Hello Song' },
-            { src: '../audio/everyDaySchool.mp3', type: 'audio/mpeg', title: 'Every day I go to school' },
-            { src: '../audio/threelittlemonkey.mp3', type: 'audio/mpeg', title: 'Three little monkey' }
+            { src: '../audio/everyDaySchool.mp3', type: 'audio/mpeg', title: 'Every day I go to school',
+                src: '../video/threelittlemonkey.mp4', type: 'audio/mpeg', title: 'Three little monkey' 
+            },
         ];
 
         // 获取 DOM 元素
@@ -223,6 +180,7 @@
         const prevBtn = document.getElementById("prev-btn");
         const nextBtn = document.getElementById("next-btn");
         const songTitle = document.getElementById("song-title");
+        const artist = document.getElementById("artist");
         const playlistItems = document.getElementById("playlist-items");
         const progressBar = document.getElementById("progress-bar");
         const currentTimeEl = document.getElementById("current-time");
@@ -236,41 +194,20 @@
             playlistItems.innerHTML = "";
             playlist.forEach((song, index) => {
                 const li = document.createElement("li");
-                li.textContent = song.title;
+                li.textContent = `${song.title}`;
                 li.addEventListener("click", () => playSong(index));
-                if (index === currentSongIndex) li.classList.add('active');
                 playlistItems.appendChild(li);
             });
         }
 
-        // 加载歌曲并滚动到当前歌曲
+        // 加载歌曲
         function loadSong(index) {
             const song = playlist[index];
             audioPlayer.src = song.src;
             songTitle.textContent = song.title;
+            artist.textContent = song.artist;
             currentSongIndex = index;
             audioPlayer.addEventListener("loadedmetadata", updateDuration, { once: true });
-            updatePlaylistUI();
-            scrollToCurrentSong();
-        }
-
-        // 更新播放列表 UI
-        function updatePlaylistUI() {
-            const items = playlistItems.getElementsByTagName('li');
-            for (let i = 0; i < items.length; i++) {
-                items[i].classList.toggle('active', i === currentSongIndex);
-            }
-        }
-
-        // 滚动到当前播放的歌曲
-        function scrollToCurrentSong() {
-            const items = playlistItems.getElementsByTagName('li');
-            if (items[currentSongIndex]) {
-                items[currentSongIndex].scrollIntoView({ 
-                    behavior: 'smooth', // 平滑滚动
-                    block: 'center' // 将歌曲置于可视区域中间
-                });
-            }
         }
 
         // 播放/暂停
@@ -278,11 +215,9 @@
             if (isPlaying) {
                 audioPlayer.pause();
                 playPauseBtn.textContent = "▶";
-                playPauseBtn.classList.remove('playing');
             } else {
                 audioPlayer.play();
                 playPauseBtn.textContent = "⏸";
-                playPauseBtn.classList.add('playing');
             }
             isPlaying = !isPlaying;
         }
@@ -292,7 +227,6 @@
             loadSong(index);
             audioPlayer.play();
             playPauseBtn.textContent = "⏸";
-            playPauseBtn.classList.add('playing');
             isPlaying = true;
         }
 
