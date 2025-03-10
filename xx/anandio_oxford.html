@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学生音频播放器</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #fffacd, #87ceeb); /* 明亮渐变背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* 卡通字体 */
+        }
+
+        .player {
+            width: 90vw;
+            max-width: 450px;
+            min-width: 300px;
+            background: #fff;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-sizing: border-box;
+        }
+
+        .now-playing {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .now-playing h3 {
+            margin: 0;
+            font-size: clamp(20px, 5vw, 26px);
+            color: #ff4500; /* 橙色标题 */
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        #progress-bar {
+            flex-grow: 1;
+            margin: 0 15px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #ff4500, #ffd700, #32cd32); /* 彩虹渐变 */
+            height: 12px;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        #progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border: 4px solid #ff69b4; /* 粉色边框 */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #progress-bar::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border: 4px solid #ff69b4;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #current-time, #duration {
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: #fff;
+            background: #ff69b4; /* 粉色背景 */
+            padding: 6px 12px;
+            border-radius: 12px;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 2rem; /* 增大间距 */
+            margin-bottom: 2rem;
+        }
+
+        button {
+            width: clamp(70px, 18vw, 80px); /* 更大按钮 */
+            height: clamp(70px, 18vw, 80px);
+            background: #ffd700; /* 黄色背景 */
+            color: #ff4500; /* 橙色图标 */
+            border: 4px solid #ff4500;
+            border-radius: 50%;
+            font-size: clamp(28px, 7vw, 34px);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background: #ffcc00; /* 悬停变浅 */
+            transform: scale(1.1); /* 放大效果 */
+        }
+
+        button:active {
+            transform: scale(0.95); /* 点击缩小 */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #play-pause-btn.playing {
+            background: #32cd32; /* 播放时变绿色 */
+            color: #fff;
+        }
+
+        .playlist {
+            max-height: 30vh;
+            overflow-y: auto;
+            background: #f0f8ff; /* 浅蓝色背景 */
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .playlist h4 {
+            margin: 0 0 1rem;
+            font-size: clamp(18px, 4.5vw, 22px);
+            color: #ff4500;
+            text-align: center;
+        }
+
+        .playlist ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .playlist li {
+            padding: 1rem;
+            cursor: pointer;
+            background: #ffd700; /* 黄色卡片 */
+            border-radius: 12px;
+            margin: 0.6rem 0;
+            font-size: clamp(16px, 4vw, 20px);
+            color: #ff4500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .playlist li::before {
+            content: "🎵"; /* 音乐符图标 */
+            font-size: 24px;
+        }
+
+        .playlist li:hover {
+            background: #ffcc00; /* 悬停变浅 */
+        }
+
+        .playlist li.active {
+            background: #ff4500; /* 播放中变橙色 */
+            color: #fff;
+        }
+
+        /* 媒体查询：小屏幕优化 */
+        @media (max-width: 480px) {
+            .player {
+                padding: 20px;
+            }
+            .controls {
+                gap: 1.5rem;
+            }
+            .playlist li {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <audio id="audio-player"></audio>
+        <div class="now-playing">
+            <h3 id="song-title">选择一首歌</h3>
+        </div>
+        <div class="progress-container">
+            <span id="current-time">0:00</span>
+            <input type="range" id="progress-bar" min="0" max="100" value="0">
+            <span id="duration">0:00</span>
+        </div>
+        <div class="controls">
+            <button id="prev-btn">⏮</button>
+            <button id="play-pause-btn">▶</button>
+            <button id="next-btn">⏭</button>
+        </div>
+        <div class="playlist">
+            <h4>播放列表</h4>
+            <ul id="playlist-items"></ul>
+        </div>
+    </div>
+    <script>
+        const playlist = [
+            { src: '../audio/English/Oxford_Phonics_World/unit1_11.mp3', type: 'audio/mpeg', title: 'unit1' },
+            { src: '../audio/English/Oxford_Phonics_World/unit2_19.mp3', type: 'audio/mpeg', title: 'unit2' },
+            { src: '../audio/English/Oxford_Phonics_World/unit3_31.mp3', type: 'audio/mpeg', title: 'unit3' },
+            { src: '../audio/English/Oxford_Phonics_World/unit4_39.mp3', type: 'audio/mpeg', title: 'unit4' },
+            { src: '../audio/English/Oxford_Phonics_World/unit5_51.mp3', type: 'audio/mpeg', title: 'unit5' },
+            { src: '../audio/English/Oxford_Phonics_World/unit6_59.mp3', type: 'audio/mpeg', title: 'unit6' },
+            { src: '../audio/English/Oxford_Phonics_World/unit7_71.mp3', type: 'audio/mpeg', title: 'unit7' }
+        ];
+
+        // 获取 DOM 元素
+        const audioPlayer = document.getElementById("audio-player");
+        const playPauseBtn = document.getElementById("play-pause-btn");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const songTitle = document.getElementById("song-title");
+        const playlistItems = document.getElementById("playlist-items");
+        const progressBar = document.getElementById("progress-bar");
+        const currentTimeEl = document.getElementById("current-time");
+        const durationEl = document.getElementById("duration");
+
+        let currentSongIndex = 0;
+        let isPlaying = false;
+
+        // 初始化播放列表
+        function loadPlaylist() {
+            playlistItems.innerHTML = "";
+            playlist.forEach((song, index) => {
+                const li = document.createElement("li");
+                li.textContent = song.title;
+                li.addEventListener("click", () => playSong(index));
+                if (index === currentSongIndex) li.classList.add('active');
+                playlistItems.appendChild(li);
+            });
+        }
+
+        // 加载歌曲并滚动到当前歌曲
+        function loadSong(index) {
+            const song = playlist[index];
+            audioPlayer.src = song.src;
+            songTitle.textContent = song.title;
+            currentSongIndex = index;
+            audioPlayer.addEventListener("loadedmetadata", updateDuration, { once: true });
+            updatePlaylistUI();
+            scrollToCurrentSong();
+        }
+
+        // 更新播放列表 UI
+        function updatePlaylistUI() {
+            const items = playlistItems.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.toggle('active', i === currentSongIndex);
+            }
+        }
+
+        // 滚动到当前播放的歌曲
+        function scrollToCurrentSong() {
+            const items = playlistItems.getElementsByTagName('li');
+            if (items[currentSongIndex]) {
+                items[currentSongIndex].scrollIntoView({ 
+                    behavior: 'smooth', // 平滑滚动
+                    block: 'center' // 将歌曲置于可视区域中间
+                });
+            }
+        }
+
+        // 播放/暂停
+        function togglePlayPause() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                playPauseBtn.textContent = "▶";
+                playPauseBtn.classList.remove('playing');
+            } else {
+                audioPlayer.play();
+                playPauseBtn.textContent = "⏸";
+                playPauseBtn.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 播放指定歌曲
+        function playSong(index) {
+            loadSong(index);
+            audioPlayer.play();
+            playPauseBtn.textContent = "⏸";
+            playPauseBtn.classList.add('playing');
+            isPlaying = true;
+        }
+
+        // 上一曲
+        function playPrevious() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            playSong(currentSongIndex);
+        }
+
+        // 下一曲
+        function playNext() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            playSong(currentSongIndex);
+        }
+
+        // 格式化时间
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // 更新总时长
+        function updateDuration() {
+            progressBar.max = audioPlayer.duration;
+            durationEl.textContent = formatTime(audioPlayer.duration);
+        }
+
+        // 更新进度条和当前时间
+        audioPlayer.addEventListener("timeupdate", () => {
+            progressBar.value = audioPlayer.currentTime;
+            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        // 调整播放进度
+        progressBar.addEventListener("input", () => {
+            audioPlayer.currentTime = progressBar.value;
+        });
+
+        // 歌曲结束后自动播放下一曲
+        audioPlayer.addEventListener("ended", playNext);
+
+        // 事件监听
+        playPauseBtn.addEventListener("click", togglePlayPause);
+        prevBtn.addEventListener("click", playPrevious);
+        nextBtn.addEventListener("click", playNext);
+
+        // 初始化
+        loadPlaylist();
+        loadSong(0);
+    </script>
+</body>
+</html>
