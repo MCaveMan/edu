@@ -47,6 +47,22 @@ jobs:
         description: 目录
         title: 目录
         corners : false
+    - name: Converts Markdown to HTML
+      uses: jaywcjlove/markdown-to-html-cli@main
+      with:
+        source: xx/grade1/cuoti/shuxue.md
+        output: xx/grade1/cuoti/shuxue.html
+        description: 数学错题
+        title: 数学错题
+        corners : false
+    - name: Converts Markdown to HTML
+      uses: jaywcjlove/markdown-to-html-cli@main
+      with:
+        source: xx/grade1/cuoti/yuwen.md
+        output: xx/grade1/cuoti/yuwen.html
+        description: 语文错题
+        title: 语文错题
+        corners : false
     - name: Commit files
       run: |
         git config --local user.email "andyBot@1659.us.kg"
